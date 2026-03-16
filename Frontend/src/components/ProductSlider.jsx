@@ -1,22 +1,21 @@
 import React from "react";
 import Slider from "react-slick";
 import ProductItem from "./ProductItem";
-import { PopularProduct } from "../assets/ConstantData";
-import NextArrow from "../assets/helper/NextButton";
-import PrevArrow from "../assets/helper/PrevButton";
+import RingLoader from 'react-spinners/RingLoader';
 
-const ProductSlider = ({ item, Productdata, latestProd, setIsModal, setSingleProductId }) => {
+const ProductSlider = ({ item, Productdata, isLoading }) => {
   var settings = {
     dots: false,
     infinite: true,
-    arrows: true,
+    arrows: false,
     speed: 500,
     autoplay: true,
     autoplaySpeed: 2000,
     slidesToShow: item,
     slidesToScroll: 1,
-    nextArrow: <NextArrow className="bg-white text-black" />,
-    prevArrow: <PrevArrow className="bg-white text-black" />,
+    // Add padding between slides
+    centerMode: false,
+    variableWidth: false,
     responsive: [
       {
         breakpoint: 1280,
@@ -52,14 +51,20 @@ const ProductSlider = ({ item, Productdata, latestProd, setIsModal, setSinglePro
   };
 
   return (
-    <div className="productsSlider my-8 w-full">
-      {latestProd && <h1 className="text-2xl font-semibold">{latestProd}</h1>}
-
-      <Slider {...settings} className="w-full py-5">
-        {Productdata?.map((item, index) => (
-          <ProductItem key={index} data={item} setIsModal={setIsModal} setSingleProductId={setSingleProductId} />
-        ))}
-      </Slider>
+    <div className="productsSlider my-8 w-full px-2">
+      {isLoading ? (
+        <div className="w-full flex justify-center items-center h-64">
+          <RingLoader />
+        </div>
+      ) : (
+        <Slider {...settings} className="w-full -mx-2">
+          {Productdata?.map((item) => (
+            <div key={item._id} className="px-2"> {/* Add padding wrapper */}
+              <ProductItem data={item} />
+            </div>
+          ))}
+        </Slider>
+      )}
     </div>
   );
 };

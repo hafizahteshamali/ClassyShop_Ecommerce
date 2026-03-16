@@ -24,7 +24,7 @@ export const requireAuth = async (req, res, next)=>{
 }
 
 export const isAdmin = async (req, res, next)=>{
-    if(req.user && req.user.role !== "admin"){
+    if(req.user && req.user.role === "admin"){
         next();
     }else{
         return res.status(401).send({success: false, message: "Access denied. Admin only."});

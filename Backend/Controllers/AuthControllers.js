@@ -9,7 +9,7 @@ import jwt from "jsonwebtoken";
 export const SignupControllers = async (req, res) => {
     try {
         const { firstname, lastname, email, password } = req.body;
-        const profileImage = req.file.path;
+        const profileImage = req.file?.path;
 
         if (!firstname || !lastname || !email || !password || !profileImage) {
             return res.status(400).send({ success: false, message: "all fields required" });
@@ -84,33 +84,69 @@ export const VerifySignupControllers = async (req, res) => {
 export const resendOtp = async (req, res) => {
     try {
         const { email } = req.body;
+        
         if (!email) {
-            return res.status(400).send({ success: false, message: "all fields required" });
+            return res.status(400).send({ 
+                success: false, 
+                message: "Email is required" 
+            });
         }
+
+        // Find user
         const foundUser = await authModel.findOne({ email });
         if (!foundUser) {
-            return res.status(404).send({ success: false, message: "user not found" });
+            return res.status(404).send({ 
+                success: false, 
+                message: "User not found" 
+            });
         }
+
+        // Check if already verified
         if (foundUser.isVerified) {
-            return res.status(400).send({ success: false, message: "user already verified" });
+            return res.status(400).send({ 
+                success: false, 
+                message: "User already verified" 
+            });
         }
+
+        // Generate new OTP
         const newOtp = crypto.randomInt(100000, 1000000).toString();
-        const newOtpExpire = new Date(Date.now() + 10 * 60 * 1000);
+        const newOtpExpire = new Date(Date.now() + 10 * 60 * 1000); // 10 minutes
+
+        // Update or create OTP document
         await otpModel.findOneAndUpdate(
             { email },
-            { otp: newOtp, expireAt: newOtpExpire, purpose: "signup" },
-            { new: true }
-        )
-        sendEmail(
+            { 
+                otp: newOtp, 
+                expireAt: newOtpExpire, 
+                purpose: "signup" 
+            },
+            { 
+                upsert: true,  // Create if doesn't exist
+                new: true      // Return updated document
+            }
+        );
+
+        // Send email
+        await sendEmail(
             email,
-            "Resend OTP",
+            "Resend OTP - Verification Code",
             otpTemplate(foundUser.firstname, newOtp)
-        )
-        return res.status(200).send({ success: true, message: "resent otp on via email" })
+        );
+
+        return res.status(200).send({ 
+            success: true, 
+            message: "OTP resent successfully. Please check your email." 
+        });
+
     } catch (error) {
-        return res.status(500).send({ success: false, message: error.message })
+        console.error("Resend OTP Error:", error);
+        return res.status(500).send({ 
+            success: false, 
+            message: error.message || "Internal server error" 
+        });
     }
-}
+};
 
 export const LoginControllers = async (req, res) => {
     try {

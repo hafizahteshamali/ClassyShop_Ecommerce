@@ -1,80 +1,128 @@
-import { Link } from "react-router-dom";
-import Rating from '@mui/material/Rating';
+import { Link, useNavigate } from "react-router-dom";
 import { useState } from "react";
-import { MdOutlineZoomOutMap } from "react-icons/md";
-import { LuGitCompareArrows } from "react-icons/lu";
-import { IoMdHeartEmpty } from "react-icons/io";
 import { IoCart } from "react-icons/io5";
+import { postReq } from "../api/axios";
+import { toast } from "react-toastify";
+import {useDispatch, useSelector} from "react-redux";
+import { setCart } from "../store/cartSlice";
 
-const ProductItem = ({ data, setIsModal, setSingleProductId }) => {
-
+const ProductItem = ({ data }) => {
   const [isHovered, setIsHovered] = useState(false);
+  const [quantity, setQuantity] = useState(1);
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
+  const cartProducts = useSelector((state)=>state?.cart);
 
-  const { featureImages = [], discount, brand, productName, ratings = 0, oldPrice, salePrice, _id } = data;
+  const {
+    category,
+    discountedPrice,
+    images = [],
+    brand,
+    name,
+    price,
+    _id
+  } = data || {};
 
-  const handleChange = (id) => {
-    setIsModal(true);
-    setSingleProductId(id);
-  };
+  const categoryName = typeof category === "object" ? category?.name : category;
+
+  if (!data || !_id) return null;
+
+  const handleAddToCart = async (productId) =>{
+    try {
+      const token = sessionStorage.getItem("token");
+      if(token){
+        const response = await postReq("/cart/add", {
+          productId: productId,
+          quantity: quantity
+        })
+        dispatch(setCart(response?.cart))
+      }else{
+        toast.error("please loggin by your account before shopping")
+        setTimeout(()=>{
+          navigate('/login')
+        }, 1000)
+      }
+
+    } catch (error) {
+      console.log(error);
+    }
+  }
 
   return (
     <div
-      className="productItem rounded-md p-2 mx-2 border relative overflow-hidden cursor-pointer border-[#949494] bg-[#ffffff] shadow-md"
+      className="rounded-xl border overflow-hidden border-gray-200 bg-white shadow-sm hover:shadow-lg transition-all duration-300"
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
     >
-      <div className="imgWrapper w-full h-[250px] rounded-md overflow-hidden relative">
-
+      
+      {/* Image Container */}
+      <div className="w-full h-[280px] relative overflow-hidden bg-gray-100">
+          {brand && (
+            <span className="absolute left-3 top-3 bg-white/90 backdrop-blur-sm py-1.5 px-4 rounded-full z-20 text-sm font-semibold text-gray-700 hover:text-[#ff5252] transition-all duration-300 shadow-md">{brand}</span>
+          )}
         {/* Main Image */}
-        <img
-          src={featureImages[0].url}
-          className={`w-full h-full object-contain absolute top-0 left-0 transition-opacity duration-1000 ${isHovered ? 'opacity-0' : 'opacity-100'}`}
-          alt="product"
-        />
-
-        {/* Hover Image */}
-        {featureImages[1] && (
+        {images[0]?.url && (
           <img
-            src={featureImages[1].url}
-            className={`w-full h-full object-contain absolute top-0 left-0 transition-opacity duration-1000 ${isHovered ? 'opacity-100' : 'opacity-0'}`}
-            alt="product-hover"
+            src={images[0].url}
+            className={`w-full h-full object-contain transition-all duration-500 ${
+              isHovered ? "opacity-0 scale-110" : "opacity-100"
+            }`}
+            alt={name}
           />
         )}
+
+        {/* Hover Image */}
+        {images[1]?.url && (
+          <img
+            src={images[1].url}
+            className={`absolute top-0 left-0 w-full h-full object-contain transition-all duration-500 ${
+              isHovered ? "opacity-100 scale-110" : "opacity-0"
+            }`}
+            alt={name}
+          />
+        )}
+
       </div>
 
-      <div className="Info p-3">
-        <h6 className="text-[13px]">
-          <Link to="/" className="hover:text-gray-400 transition-all duration-100">{brand}</Link>
-        </h6>
-        <h4 className="text-[13px] font-[500] text-[rgba(0, 0, 0, 0.9)] mt-2 hover:text-[#ff5252] transition-all duration-100">
-          <Link to="/">{productName?.slice(0, 20)}...</Link>
-        </h4>
+      {/* Product Info */}
+      <div className="p-4">
 
-        <Rating name="size-small" value={ratings} size="small" readOnly />
+        {/* Category */}
+        {categoryName && (
+          <p className="text-xs text-gray-500 uppercase">
+            {categoryName}
+          </p>
+        )}
 
-        <div className="w-full flex justify-between items-center mt-2">
-          <span className="line-through text-gray-400">Rs: {oldPrice}</span>
-          <span className="text-[#ff5252] font-semibold">Rs: {salePrice}</span>
+        {/* Product Name */}
+        <h3 className="text-sm font-semibold text-gray-800 line-clamp-2">
+          <Link to={`/product/${_id}`}>
+            {name}
+          </Link>
+        </h3>
+
+        {/* Price */}
+        <div className="flex items-center justify-between gap-2 my-2">
+          {discountedPrice && (
+            <span className="text-lg font-bold text-red-500">
+              Rs. {discountedPrice}
+            </span>
+          )}
+
+          {price && discountedPrice && (
+            <span className="text-sm text-gray-400 line-through">
+              Rs. {price}
+            </span>
+          )}
         </div>
+
+        {/* Add To Cart */}
+        <button onClick={()=>handleAddToCart(_id)} className="w-full flex justify-center items-center gap-2 py-2 rounded-lg bg-red-500 text-white hover:bg-black transition">
+          <IoCart />
+          Add To Cart
+        </button>
+
       </div>
-
-      {discount && (
-        <span className="bg-red-500 py-1 px-2 rounded-lg text-white absolute top-[15px] left-[20px]">{discount}%</span>
-      )}
-
-      <div className={`flex flex-col justify-center items-center gap-5 absolute ${isHovered == true ? "top-[10%] opacity-100" : "-top-[40%] opacity-0"} right-[20px] transition-all duration-800`}>
-        <MdOutlineZoomOutMap onClick={() => handleChange(_id)} className="text-[16px] h-[40px] w-[40px] rounded-full bg-white p-1.5 hover:text-[#ff5252] transition-all duration-200" />
-        <LuGitCompareArrows className="text-[16px] h-[40px] w-[40px] rounded-full bg-white p-1.5 hover:text-[#ff5252] transition-all duration-200" />
-        <IoMdHeartEmpty className="text-[16px] h-[40px] w-[40px] rounded-full bg-white p-1.5 hover:text-[#ff5252] transition-all duration-200" />
-      </div>
-
-      <button
-        onClick={(e) => { e.stopPropagation(); /* Add-to-cart logic here */ }}
-        className="flex justify-center items-center text-[13px] gap-2 mx-auto text-[#ff5252] border border-[#ff5252] hover:bg-black hover:text-white hover:border-black transition-all duration-700 h-[40px] w-[95%] rounded-md mt-2"
-      >
-        <IoCart className="text-2xl" />
-        ADD TO CART
-      </button>
     </div>
   );
 };

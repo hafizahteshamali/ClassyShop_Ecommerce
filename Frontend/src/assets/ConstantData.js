@@ -21,19 +21,19 @@ export const NavData = [
         subMenu: [
           {
             text: "T-Shirts",
-            url: "/",
+            url: "/mens/t-shirt",
           },
           {
             text: "Casual Shirts",
-            url: "/",
+            url: "/mens/casual-shirt",
           },
           {
             text: "Blazer & Coats",
-            url: "/",
+            url: "/mens/blazer-and-coats",
           },
           {
             text: "Jeans",
-            url: "/",
+            url: "/mens/jeans",
           },
         ],
       },
@@ -45,35 +45,35 @@ export const NavData = [
         subMenu: [
           {
             text: "Kurtas & Suits",
-            url: "/",
+            url: "/womens/kurtas-and-suits",
           },
           {
             text: "Sarees",
-            url: "/",
+            url: "/womens/sarees",
           },
           {
             text: "Tops",
-            url: "/",
+            url: "/womens/tops",
           },
           {
             text: "Jeans",
-            url: "/",
+            url: "/womens/jeans",
           },
         ],
       },
       {
-        text: "Girls",
+        text: "Kids",
         url: "/",
         dropDown: true,
         subCategory: true,
         subMenu: [
           {
-            text: "Tops",
-            url: "/",
+            text: "Shirt and Jeans",
+            url: "/kids/shirt-and-jeans",
           },
           {
-            text: "Kurta Sets",
-            url: "/",
+            text: "Kurta shalwar",
+            url: "/kids/kurta-and-shalwar",
           },
         ],
       },
@@ -93,41 +93,41 @@ export const NavData = [
         subMenu: [
           {
             text: "Apple",
-            url: "/",
+            url: "/mobiles/apple",
           },
           {
             text: "Samsung",
-            url: "/",
+            url: "/mobiles/samsung",
           },
           {
             text: "Oppo",
-            url: "/",
+            url: "/mobiles/oppo",
           },
           {
             text: "Vivo",
-            url: "/",
+            url: "/mobiles/vivo",
           },
           {
             text: "Techno",
-            url: "/",
+            url: "/mobiles/techno",
           },
         ],
       },
       {
         text: "Laptops",
-        url: "/",
+        url: "/electronics/laptops",
         dropDown: false,
         subCategory: false,
       },
       {
         text: "Smart Watches",
-        url: "/",
+        url: "/electronics/smart-watches",
         dropDown: false,
         subCategory: false,
       },
       {
         text: "Cameras",
-        url: "/",
+        url: "/electronics/cameras",
         dropDown: false,
         subCategory: false,
       },
@@ -141,13 +141,19 @@ export const NavData = [
     subMenu: [
       {
         text: "Men Bags",
-        url: "/",
+        url: "/bags/men-bags",
         dropDown: false,
         subCategory: false,
       },
       {
         text: "Women Bags",
-        url: "/",
+        url: "/bags/women-bags",
+        dropDown: false,
+        subCategory: false,
+      },
+      {
+        text: "Kid Bags",
+        url: "/bags/kid-bags",
         dropDown: false,
         subCategory: false,
       },
@@ -161,13 +167,19 @@ export const NavData = [
     subMenu: [
       {
         text: "Men Footwear",
-        url: "/",
+        url: "/footwear/men-footwears",
         dropDown: false,
         subCategory: false,
       },
       {
         text: "Women Footwear",
-        url: "/",
+        url: "/footwear/women-footwears",
+        dropDown: false,
+        subCategory: false,
+      },
+      {
+        text: "Kid Footwear",
+        url: "/footwear/kid-footwears",
         dropDown: false,
         subCategory: false,
       },
@@ -175,25 +187,25 @@ export const NavData = [
   },
   {
     text: "Groceries",
-    url: "/",
+    url: "/groceries",
     dropDown: false,
     subCategory: false,
   },
   {
     text: "Beauty",
-    url: "/",
+    url: "/beauty",
     dropDown: false,
     subCategory: false,
   },
   {
     text: "Wellness",
-    url: "/",
+    url: "/wellness",
     dropDown: false,
     subCategory: false,
   },
   {
     text: "Jewellery",
-    url: "/",
+    url: "/jewellery",
     dropDown: false,
     subCategory: false,
   },

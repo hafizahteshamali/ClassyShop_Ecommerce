@@ -10,8 +10,8 @@ const categorySchema = new mongoose.Schema({
         type: String,
         required: true,
         unique: true,
-        lowercase: true,
-        index: true
+        index: true,
+        lowercase: true
     },
     parent: {
         type: mongoose.Schema.Types.ObjectId,
