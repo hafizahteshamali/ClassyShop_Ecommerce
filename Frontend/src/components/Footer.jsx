@@ -101,7 +101,7 @@ const Footer = () => {
         <ul className="flex justify-center lg:justify-start gap-5 items-center w-[100%] mt-5 md:w-[48%] lg:w-[30%]">
           {socialData.map((item, index) => {
             return (
-              <li key={index} className="h-[40px] w-[40px] bg-white hover:bg-[#ff5252] hover:text-white transition duration-700 flex justify-center items-center rounded-full" key={index}>
+              <li key={index} className="h-[40px] w-[40px] bg-white hover:bg-[#ff5252] hover:text-white transition duration-700 flex justify-center items-center rounded-full">
                 <NavLink to={item.link}>{item.icon}</NavLink>
               </li>
             );
