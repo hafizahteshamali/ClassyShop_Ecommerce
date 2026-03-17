@@ -36,6 +36,7 @@ import Groceries from "../pages/CategoryPages/groceries/Groceries"
 import Beauty from "../pages/CategoryPages/beauty/Beauty"
 import Wellness from "../pages/CategoryPages/welless/Wellness"
 import Jewellery from "../pages/CategoryPages/jewellery/Jewellery"
+import ProductDetail from "../pages/Products/ProductDetail"
 
 const AppRoutes = () => {
   return (
@@ -53,6 +54,7 @@ const AppRoutes = () => {
       <Route path="/womens/jeans" element={<WomenJeans />} />
       <Route path="/kids/shirt-and-jeans" element={<ShirtAndJeans />} />
       <Route path="/kids/kurta-and-shalwar" element={<KurtaAndShalwar />} />
+      <Route path="/products/:id" element={<ProductDetail />} />
 
       {/* Electronics */}
       <Route path="/mobiles/apple" element={<Apple />} />

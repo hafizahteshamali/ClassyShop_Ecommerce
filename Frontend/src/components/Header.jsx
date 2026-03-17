@@ -101,16 +101,12 @@ const Header = () => {
           </div>
           <ul className="flex items-center justify-end gap-5 w-full">
             <li>
-              <Tooltip title="Cart">
-                <IconButton>
-                  <Badge badgeContent={isLoggedIn && data.items.length} color="error">
-                    <IoCart
-                      className="text-3xl hover:text-[var(--colorPrimary)]"
-                      color="action"
-                    />
-                  </Badge>
-                </IconButton>
-              </Tooltip>
+              <div className="relative">
+                {isLoggedIn && (
+                  <span className="h-[20px] w-[20px] rounded-full bg-red-500 text-sm flex justify-center items-center text-white absolute -top-[10px] -right-[10px]">{data.items.length}</span>
+                )}
+              <IoCart className="text-3xl" />
+              </div>
             </li>
             <li className="relative profile-menu-container">
               {isLoggedIn ? (
@@ -154,7 +150,7 @@ const Header = () => {
                 </div>
               ) : (
                 <Link
-                  className="hover:text-[var(--bgPrimary)] bg-gray-700 text-white py-2 px-3 flex justify-center items-center rounded transition text-[15px] font-[600]"
+                  className="bg-gray-700 text-white py-2 px-3 flex justify-center items-center rounded transition text-[15px] font-[600]"
                   to="/login"
                 >
                   Login
