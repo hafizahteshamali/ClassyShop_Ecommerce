@@ -18,7 +18,7 @@ const app = express();
 app.use(cookieParser());
 app.use(express.json());
 app.use(cors({
-    origin: "http://localhost:5173", // frontend URL
+    origin: "https://classy-shop-ecommerce-fost.vercel.app/", // frontend URL
     credentials: true               // 🔥 IMPORTANT
 }));
 
