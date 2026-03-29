@@ -2,7 +2,7 @@ import axios from "axios";
 import { toast } from "react-toastify";
 
 const apiClient = axios.create({
-    baseURL: "http://localhost:8050/api/",
+    baseURL: "https://classy-shop-ecommerce.vercel.app/api/",
     timeout: 30000,
     withCredentials: true // 🔥 cookie send/receive ke liye zaruri
 });
