@@ -218,8 +218,8 @@ export const LoginControllers = async (req, res) => {
     res.cookie("token", token, {
       httpOnly: true,
       maxAge: 10 * 60 * 1000,
-      secure: process.env.NODE_ENV === "production",
-      sameSite: "strict",
+      secure: true,
+      sameSite: "none",
     });
     return res
       .status(200)
