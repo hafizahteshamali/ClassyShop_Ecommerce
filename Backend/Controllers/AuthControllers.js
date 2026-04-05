@@ -215,11 +215,11 @@ export const LoginControllers = async (req, res) => {
       process.env.SECRET_KEY,
       { expiresIn: "10m" },
     );
-    return res.cookie("token", token, {
+    res.cookie("token", token, {
       httpOnly: true,
       maxAge: 10 * 60 * 1000,
       secure: true,
-      sameSite: "none",
+      sameSite: "strict",
     });
     return res
       .status(200)
@@ -257,7 +257,7 @@ export const getMeControlller = async (req, res) =>{
 
 export const LogoutControllers = async (req, res) => {
   try {
-    return res.cookie("token", "", {
+    res.cookie("token", "", {
       httpOnly: true,
       expires: new Date(0)
     })
