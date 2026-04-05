@@ -95,18 +95,20 @@ export const CreateOrderController = async (req, res)=>{
                 })
             }
 
-            const session = await stripe.checkout.sessions.create({
-                payment_method_types: ["card"],
-                mode: "payment",
-                line_items,
-                success_url: `${process.env.CLIENT_URL}/order-confirmation/${order._id}`,
-                cancel_url: `${process.env.CLIENT_URL}/cart`,
-                metadata:{
-                    orderId: order._id.toString()
-                }
-            });
+            console.log(`${process.env.CLIENT_URL}/order/confirmation/${order._id}`)
 
-            return res.status(200).send({success: true, url: session.url});
+            // const session = await stripe.checkout.sessions.create({
+            //     payment_method_types: ["card"],
+            //     mode: "payment",
+            //     line_items,
+            //     success_url: `${process.env.CLIENT_URL}/order-confirmation/${order._id}`,
+            //     cancel_url: `${process.env.CLIENT_URL}/cart`,
+            //     metadata:{
+            //         orderId: order._id.toString()
+            //     }
+            // });
+
+            // return res.status(200).send({success: true, url: session.url});
         }
 
         // 2️⃣ Clear cart
@@ -114,7 +116,7 @@ export const CreateOrderController = async (req, res)=>{
         await cart.save();
 
         // 4️⃣ If COD, return order directly
-        res.status(200).send({success: true, order});
+        return res.status(200).send({success: true, order});
     } catch (error) {
         console.error("Create order error:", error);
         return res.status(500).send({success: false, message: error.message});

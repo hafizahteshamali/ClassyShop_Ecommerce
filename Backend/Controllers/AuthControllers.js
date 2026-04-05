@@ -219,7 +219,7 @@ export const LoginControllers = async (req, res) => {
       httpOnly: true,
       maxAge: 10 * 60 * 1000,
       secure: true,
-      sameSite: "none",
+      sameSite: "strict",
     });
     return res
       .status(200)
