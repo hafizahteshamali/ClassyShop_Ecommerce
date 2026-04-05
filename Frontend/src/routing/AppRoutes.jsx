@@ -3,7 +3,6 @@ import Layout from "../Layouts/Layout"
 import HomePage from "../pages/Home/HomePage"
 import ProductsListing from "../pages/Products/ProductsListing"
 import Signup from "../pages/Authentication/Signup"
-import { ToastContainer } from 'react-toastify';
 import OTP_verification from "../pages/Authentication/OTP_verification"
 import Login from "../pages/Authentication/Login"
 import ForgotPassword from "../pages/Authentication/ForgotPassword"
@@ -40,67 +39,111 @@ import ProductDetail from "../pages/Products/ProductDetail"
 import Cart from "../pages/Cart/Cart"
 import Checkout from "../pages/Checkout/Checkout"
 import OrderConfirmation from "../pages/Checkout/OrderConfirmation"
+import { getReq } from "../api/axios"
+import { useEffect } from "react"
+import { useDispatch } from "react-redux"
+import { setUser } from "../store/userSlice"
+import ProtectedRoute from "../components/ProtectedRoute"
+import Dashboard from "../pages/Admin/Dashboard"
 
 const AppRoutes = () => {
+  const dispatch = useDispatch();
+
+  const isFetchUser = async () => {
+    try {
+      const response = await getReq("auth/get-me");
+      dispatch(setUser(response?.user));
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  useEffect(() => {
+    isFetchUser();
+  }, []);
+
   return (
     <Routes>
+
+      {/* Layout Routes */}
       <Route path="/" element={<Layout />}>
-      {/* home Page */}
-      <Route index element={<HomePage />} />
-      <Route path="/cart" element={<Cart />} />
-      <Route path="/checkout" element={<Checkout />} />
-      <Route path="/order-confirmation/:id" element={<OrderConfirmation />} />
-      <Route path="/mens/t-shirt" element={<TShirt />} />
-      <Route path="/mens/casual-shirt" element={<CasualShirts />} />
-      <Route path="/mens/blazer-and-coats" element={<BlazerAndCoats />} />
-      <Route path="/mens/jeans" element={<Jeans />} />
-      <Route path="/womens/kurtas-and-suits" element={<KurtasAndSuits />} />
-      <Route path="/womens/sarees" element={<Sarees />} />
-      <Route path="/womens/tops" element={<Tops />} />
-      <Route path="/womens/jeans" element={<WomenJeans />} />
-      <Route path="/kids/shirt-and-jeans" element={<ShirtAndJeans />} />
-      <Route path="/kids/kurta-and-shalwar" element={<KurtaAndShalwar />} />
-      <Route path="/products/:id" element={<ProductDetail />} />
 
-      {/* Electronics */}
-      <Route path="/mobiles/apple" element={<Apple />} />
-      <Route path="/mobiles/samsung" element={<Samsung />} />
-      <Route path="/mobiles/oppo" element={<Oppo />} />
-      <Route path="/mobiles/vivo" element={<Vivo />} />
-      <Route path="/mobiles/techno" element={<Techno />} />
+        <Route index element={<HomePage />} />
 
-      {/* Laptops */}
-      <Route path="/electronics/laptops" element={<Laptops />} />
+        {/* ✅ Protected Routes */}
+        <Route 
+          path="/cart" 
+          element={
+            <ProtectedRoute>
+              <Cart />
+            </ProtectedRoute>
+          } 
+        />
 
-      {/* Smart Watches */}
-      <Route path="/electronics/smart-watches" element={<SmartWatches />} />
-      
-      {/* Cameras */}
-      <Route path="/electronics/cameras" element={<Cameras />} />
+        <Route 
+          path="/checkout" 
+          element={
+            <ProtectedRoute>
+              <Checkout />
+            </ProtectedRoute>
+          } 
+        />
 
-      {/* Bags */}
-      <Route path="/bags/men-bags" element={<MenBags />} />
-      <Route path="/bags/women-bags" element={<WomenBags />} />
-      <Route path="/bags/kid-bags" element={<KidBags />} />
+        <Route 
+          path="/order-confirmation/:id" 
+          element={
+            <ProtectedRoute>
+              <OrderConfirmation />
+            </ProtectedRoute>
+          } 
+        />
 
-      {/* Footwears */}
-      <Route path="/footwear/men-footwears" element={<MenFootwears />} />
-      <Route path="/footwear/women-footwears" element={<WomenFootwears />} />
-      <Route path="/footwear/kid-footwears" element={<KidFootwears />} />
+        {/* Categories */}
+        <Route path="/mens/t-shirt" element={<TShirt />} />
+        <Route path="/mens/casual-shirt" element={<CasualShirts />} />
+        <Route path="/mens/blazer-and-coats" element={<BlazerAndCoats />} />
+        <Route path="/mens/jeans" element={<Jeans />} />
 
-      {/* Groceries */}
-      <Route path="/groceries" element={<Groceries />} />
+        <Route path="/womens/kurtas-and-suits" element={<KurtasAndSuits />} />
+        <Route path="/womens/sarees" element={<Sarees />} />
+        <Route path="/womens/tops" element={<Tops />} />
+        <Route path="/womens/jeans" element={<WomenJeans />} />
 
-      {/* Beauty */}
-      <Route path="/beauty" element={<Beauty />} />
+        <Route path="/kids/shirt-and-jeans" element={<ShirtAndJeans />} />
+        <Route path="/kids/kurta-and-shalwar" element={<KurtaAndShalwar />} />
 
-      {/* Wellness */}
-      <Route path="/wellness" element={<Wellness />} />
+        <Route path="/products/:id" element={<ProductDetail />} />
 
-      {/* jewellery */}
-      <Route path="/jewellery" element={<Jewellery />} />
+        {/* Electronics */}
+        <Route path="/mobiles/apple" element={<Apple />} />
+        <Route path="/mobiles/samsung" element={<Samsung />} />
+        <Route path="/mobiles/oppo" element={<Oppo />} />
+        <Route path="/mobiles/vivo" element={<Vivo />} />
+        <Route path="/mobiles/techno" element={<Techno />} />
+
+        <Route path="/electronics/laptops" element={<Laptops />} />
+        <Route path="/electronics/smart-watches" element={<SmartWatches />} />
+        <Route path="/electronics/cameras" element={<Cameras />} />
+
+        {/* Bags */}
+        <Route path="/bags/men-bags" element={<MenBags />} />
+        <Route path="/bags/women-bags" element={<WomenBags />} />
+        <Route path="/bags/kid-bags" element={<KidBags />} />
+
+        {/* Footwear */}
+        <Route path="/footwear/men-footwears" element={<MenFootwears />} />
+        <Route path="/footwear/women-footwears" element={<WomenFootwears />} />
+        <Route path="/footwear/kid-footwears" element={<KidFootwears />} />
+
+        {/* Others */}
+        <Route path="/groceries" element={<Groceries />} />
+        <Route path="/beauty" element={<Beauty />} />
+        <Route path="/wellness" element={<Wellness />} />
+        <Route path="/jewellery" element={<Jewellery />} />
+
       </Route>
 
+      {/* Auth Routes */}
       <Route path="/register" element={<Signup />} />
       <Route path="/verify-email-signup" element={<OTP_verification />} />
       <Route path="/verify-email-forgot-password" element={<OTP_verification />} />
@@ -108,10 +151,21 @@ const AppRoutes = () => {
       <Route path="/forgot-password" element={<ForgotPassword />} />
       <Route path="/reset-password" element={<ResetPassword />} />
 
+      {/* Product Listing */}
       <Route path="/products" element={<Layout />}>
-        {/* product listing */}
         <Route index element={<ProductsListing />} />
       </Route>
+
+      {/* ✅ Admin Route */}
+      <Route 
+        path="/admin/dashboard" 
+        element={
+          <ProtectedRoute adminOnly={true}>
+            <Dashboard />
+          </ProtectedRoute>
+        }
+      />
+
     </Routes>
   )
 }

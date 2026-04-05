@@ -11,7 +11,7 @@ const OrderConfirmation = () => {
     const getSingleOrder = async () => {
         try {
             setLoading(true);
-            const response = await getReq(`order/confirmation/${id}`);
+            const response = await getReq(`/order/confirmation/${id}`);
             console.log(response);
             
             // Check response structure

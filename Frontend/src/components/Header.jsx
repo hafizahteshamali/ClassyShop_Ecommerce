@@ -1,4 +1,4 @@
-import { Link, useNavigate } from "react-router-dom";
+import { Link, NavLink, useNavigate } from "react-router-dom";
 import { IoCart } from "react-icons/io5";
 import Navigation from "./Navigation";
 import { useEffect, useState } from "react";
@@ -14,7 +14,8 @@ const Header = () => {
     lastname: "",
     profile: ""
   });
-  const data = useSelector((state)=>state?.cart);
+  const {cart, user} = useSelector((state)=>state);
+  console.log(user);
 
   const getUser = async () =>{
     try {
@@ -107,7 +108,7 @@ const Header = () => {
             <li>
               <div className="relative">
                 {isLoggedIn && (
-                  <span className="h-[20px] w-[20px] rounded-full bg-red-500 text-sm flex justify-center items-center text-white absolute -top-[10px] -right-[10px]">{data.items.length}</span>
+                  <span className="h-[20px] w-[20px] rounded-full bg-red-500 text-sm flex justify-center items-center text-white absolute -top-[10px] -right-[10px]">{cart.items.length}</span>
                 )}
               <IoCart onClick={()=>navigate("/cart")} className="text-3xl hover:text-gray-700" />
               </div>
@@ -135,6 +136,12 @@ const Header = () => {
                         <p className="text-sm font-semibold text-gray-900">
                           {isUserData.firstname} {isUserData.lastname}
                         </p>
+                      </div>
+
+                      <div className="px-4 py-3 border-b border-gray-100">
+                        {user?.isAdmin && (
+                          <NavLink to="/admin/dashboard">Dashboard</NavLink>
+                        )}
                       </div>
 
                       <button

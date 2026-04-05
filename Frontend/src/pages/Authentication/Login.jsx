@@ -26,7 +26,7 @@ const Login = () => {
         const response = await postReq("/auth/login", data);
         if(response?.success){
             reset();
-            navigate("/");
+            window.location.href="/";
         }
     } catch (error) {
         console.log(error.message);

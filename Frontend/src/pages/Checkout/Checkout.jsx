@@ -73,7 +73,7 @@ const onSubmit = async (data) => {
       paymentMethod: selectedPaymentMethod
     };
 
-    const response = await postReq("order/create", payload);
+    const response = await postReq("/order/create", payload);
     console.log("order response: ", response);
 
     if (response.success) {
