@@ -92,9 +92,7 @@ const AppRoutes = () => {
         <Route 
           path="/order-confirmation/:id" 
           element={
-            <ProtectedRoute>
               <OrderConfirmation />
-            </ProtectedRoute>
           } 
         />
 
